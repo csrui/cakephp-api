@@ -7,9 +7,7 @@ class ApiComponent extends Object {
 		
 		// saving the controller reference for later use
 		$this->controller =& $controller;
-		$this->controller->autoRender = false;
-		// $this->controller->layoutPath = APP.'plugins'.DS.'api'.DS.'views'.DS.'layouts';
-		
+		$this->controller->autoRender = false;		
 		
 	}
 
@@ -40,8 +38,6 @@ class ApiComponent extends Object {
 		}
 		
 		$this->controller->Session->setFlash($custom_message);
-		
-		$errors = set::merge($errors, $this->controller->validationErrors);
 		$this->controller->set('errors', $errors);
 		
 		$this->controller->render($this->controller->action, 'default', '/stub');
