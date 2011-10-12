@@ -1,18 +1,37 @@
 <?php
 
 class ApiComponent extends Object {
+	
+	public $data = array();
 
 	//called before Controller::beforeFilter()
 	function initialize(&$controller, $settings = array()) {
 		
 		// saving the controller reference for later use
 		$this->controller =& $controller;
-		$this->controller->autoRender = false;		
+		$this->controller->autoRender = false;
 		
 	}
 
 	//called after Controller::beforeFilter()
-	function startup(&$controller) {
+	function startup(&$controller) {				
+		
+		# Translate CakePHP POST's and regular POST's 
+		if (empty($this->data) && !empty($_POST)) {
+			if (isset($_POST[$this->controller->modelNames[0]]) && is_array($_POST[$this->controller->modelNames[0]])) {
+
+				$this->data = $_POST;
+
+			} else {
+				
+				$this->data[$this->controller->modelNames[0]] = array();
+					
+				foreach($_POST as $param => $val) {
+					$this->data[$this->controller->modelNames[0]][$param] = $val;
+				}
+			}
+		}
+		
 	}
 
 	//called after Controller::beforeRender()
@@ -25,9 +44,8 @@ class ApiComponent extends Object {
 	//called after Controller::render()
 	function shutdown(&$controller) {
 	}
-
-
-	public function setResponse($code, $custom_message = null, $errors = null) {
+	
+	public function setResponse($code, $custom_message = null, $errors = array()) {
 		
 		$header = $this->controller->httpCodes($code);
 		// $this->controller->header('HTTP/1.0 ' . $code . ' ' . $header[$code]);

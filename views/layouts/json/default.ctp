@@ -4,14 +4,14 @@
 	header("Cache-Control: no-store, no-cache, max-age=0, must-revalidate");
 	header("X-JSON: ". $content_for_layout);
 
-
 	$data = $this->viewVars;
 	$errors = array();
 	
-	if (isset($data['errors'])) {
+	if (isset($data['errors']) || is_null($data['errors'])) {
 		$errors = $data['errors'];
 		unset($data['errors']);
 	}
+	
 	unset($data['title_for_layout']);
 	unset($data['http_code']);
 
