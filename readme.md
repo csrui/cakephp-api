@@ -1,3 +1,15 @@
+Configuration
+=============
+
+	class AppController extends Controller {
+
+		public $components = array(
+			'Api.Api',
+			'RequestHandler',
+			'Auth',
+			'Session'
+		);
+
 Usage
 =====
 
