@@ -27,7 +27,7 @@ class ApiComponent extends Object {
 				$this->data[$this->controller->modelNames[0]] = array();
 					
 				foreach($_POST as $param => $val) {
-					if (empty($val)) continue;
+					if (strlen($val) == 0) continue;
 					$this->data[$this->controller->modelNames[0]][$param] = $val;
 				}
 			}
