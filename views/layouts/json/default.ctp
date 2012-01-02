@@ -1,8 +1,9 @@
 <?php
 
-	header("Pragma: no-cache");
-	header("Cache-Control: no-store, no-cache, max-age=0, must-revalidate");
+	// header("Pragma: no-cache");
+	// header("Cache-Control: no-store, no-cache, max-age=0, must-revalidate");
 	header("X-JSON: ". $content_for_layout);
+	header('Content-Type: application/json');
 
 	$data = $this->viewVars;
 	$errors = array();
@@ -25,6 +26,16 @@
 		'errors' => $errors
 	);
 
-	echo $this->Js->object($full_response); 
+	$js_response = $this->Js->object($full_response); 
+	
+	if (isset($_GET['callback'])) {
+		
+		echo sprintf('%s (%s)', $_GET['callback'], $js_response);
+		
+	} else {
+		
+		echo $js_response;
+
+	}
 	
 ?>
