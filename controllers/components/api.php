@@ -9,7 +9,6 @@ class ApiComponent extends Object {
 		
 		// saving the controller reference for later use
 		$this->controller =& $controller;
-		$this->controller->autoRender = false;
 		
 	}
 
@@ -42,7 +41,6 @@ class ApiComponent extends Object {
 	//called after Controller::beforeRender()
 	function beforeRender(&$controller) {
 
-		$this->controller->plugin = 'api';
 
 	}
 
@@ -51,6 +49,9 @@ class ApiComponent extends Object {
 	}
 	
 	public function setResponse($code, $custom_message = null, $errors = array()) {
+
+		$this->controller->plugin = 'api';		
+		$this->controller->autoRender = false;
 		
 		$header = $this->controller->httpCodes($code);
 		// $this->controller->header('HTTP/1.0 ' . $code . ' ' . $header[$code]);
