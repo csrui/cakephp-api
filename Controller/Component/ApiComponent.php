@@ -1,14 +1,17 @@
 <?php
 
-class ApiComponent extends Object {
+class ApiComponent extends Component {
+	
+
+	private $controller = null;
 	
 	public $data = array();
 
 	//called before Controller::beforeFilter()
-	function initialize(&$controller, $settings = array()) {
+	public function initialize($controller) {
 		
 		// saving the controller reference for later use
-		$this->controller =& $controller;
+		$this->controller = $controller;
 		
 	}
 
@@ -50,8 +53,9 @@ class ApiComponent extends Object {
 	
 	public function setResponse($code, $custom_message = null, $errors = array()) {
 
-		$this->controller->plugin = 'api';		
-		$this->controller->autoRender = false;
+		// $this->controller->layout = 'Api.default';
+		// $this->controller->autoRender = false;
+		$this->controller->viewClass = 'Api.Api';
 		
 		$header = $this->controller->httpCodes($code);
 		// $this->controller->header('HTTP/1.0 ' . $code . ' ' . $header[$code]);
@@ -61,10 +65,10 @@ class ApiComponent extends Object {
 			$custom_message = $header[$code];
 		}
 		
-		$this->controller->Session->setFlash($custom_message);
+		$this->controller->set('msg', $custom_message);
 		$this->controller->set('errors', $errors);
 		
-		$this->controller->render($this->controller->action, 'default', '/stub');
+		// $this->controller->render('/Api/Elements/json'); //$this->controller->action, 'Api.default', '/stub');
 		
 	}
 
