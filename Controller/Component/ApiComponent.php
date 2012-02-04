@@ -73,6 +73,8 @@ class ApiComponent extends Component {
 		$this->controller->set('msg', $custom_message);
 		$this->controller->set('errors', $errors);
 		
+		header('Access-Control-Allow-Origin: *');
+		
 		// $this->controller->render('/Api/Elements/json'); //$this->controller->action, 'Api.default', '/stub');
 		
 	}
