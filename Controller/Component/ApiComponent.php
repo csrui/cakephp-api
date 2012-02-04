@@ -8,39 +8,41 @@ class ApiComponent extends Component {
 	public $data = array();
 
 	//called before Controller::beforeFilter()
-	public function initialize($controller) {
-		
-		// saving the controller reference for later use
-		$this->controller = $controller;
-		
-	}
+	// public function initialize($controller) {
+	// 	
+	// 	// saving the controller reference for later use
+	// 	$this->controller = $controller;
+	// 	
+	// }
 
 	//called after Controller::beforeFilter()
-	public function startup(&$controller) {		
+	public function startup(&$controller) {	
+		
+		$this->controller = $controller;	
 		
 		# Ignore Auth functions
 		if (isset($controller->Auth)) {
 			if (Router::url($controller->Auth->loginAction) == Router::url()) return false;	
 		}
-		
+
 		# Translate CakePHP POST's and regular POST's 
 		if (empty($this->data) && !empty($_POST)) {
-			if (isset($_POST[$this->controller->modelNames[0]]) && is_array($_POST[$this->controller->modelNames[0]])) {
+			if (isset($_POST[$this->controller->modelClass]) && is_array($_POST[$this->controller->modelClass])) {
 
 				$this->data = $_POST;
 
 			} else {
 				
-				$this->data[$this->controller->modelNames[0]] = array();
+				$this->data[$this->controller->modelClass] = array();
 				
 				foreach($_POST as $param => $val) {
 					if (strlen($val) == 0) continue;
-					$this->data[$this->controller->modelNames[0]][$param] = $val;
+					$this->data[$this->controller->modelClass][$param] = $val;
 				}
 			}
 			
 			# CLEARS DATA IF ARRAY IS EMPTY
-			if (empty($this->data[$this->controller->modelNames[0]])) unset($this->data[$this->controller->modelNames[0]]);
+			if (empty($this->data[$this->controller->modelClass])) unset($this->data[$this->controller->modelClass]);
 			
 		}
 		
