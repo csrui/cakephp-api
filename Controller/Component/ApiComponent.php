@@ -16,7 +16,12 @@ class ApiComponent extends Component {
 	}
 
 	//called after Controller::beforeFilter()
-	function startup(&$controller) {				
+	public function startup(&$controller) {		
+		
+		# Ignore Auth functions
+		if (isset($controller->Auth)) {
+			if (Router::url($controller->Auth->loginAction) == Router::url()) return false;	
+		}
 		
 		# Translate CakePHP POST's and regular POST's 
 		if (empty($this->data) && !empty($_POST)) {
@@ -27,7 +32,7 @@ class ApiComponent extends Component {
 			} else {
 				
 				$this->data[$this->controller->modelNames[0]] = array();
-					
+				
 				foreach($_POST as $param => $val) {
 					if (strlen($val) == 0) continue;
 					$this->data[$this->controller->modelNames[0]][$param] = $val;
