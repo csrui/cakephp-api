@@ -8,17 +8,15 @@ class ApiComponent extends Component {
 	public $data = array();
 
 	//called before Controller::beforeFilter()
-	// public function initialize($controller) {
-	// 	
-	// 	// saving the controller reference for later use
-	// 	$this->controller = $controller;
-	// 	
-	// }
+	public function initialize($controller) {
+		
+		// saving the controller reference for later use
+		$this->controller = $controller;
+		
+	}
 
 	//called after Controller::beforeFilter()
 	public function startup(&$controller) {	
-		
-		$this->controller = $controller;	
 		
 		# Ignore Auth functions
 		if (isset($controller->Auth)) {
