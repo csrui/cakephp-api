@@ -35,6 +35,10 @@ class ApiView extends View {
 		
 		$response['response'] = $this->viewVars;
 	
+		// Remove DebugKit stuff
+		unset($response['response']['debugToolbarPanels']);
+		unset($response['response']['debugToolbarJavascript']);
+	
 		$this->set('response', $response);
 	
 		if ($this->request->ext == 'json') {
