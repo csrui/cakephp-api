@@ -18,6 +18,10 @@ class ApiComponent extends Component {
 	//called after Controller::beforeFilter()
 	public function startup(&$controller) {	
 		
+		# If not using json, just ignore
+		#TODO Improve code with a conf with valid extensions
+		if (!isset($controller->request->params['ext']) || $controller->request->params['ext'] != 'json') return;
+		
 		# Ignore Auth functions
 		if (isset($controller->Auth)) {
 			if (Router::url($controller->Auth->loginAction) == Router::url()) return false;	
