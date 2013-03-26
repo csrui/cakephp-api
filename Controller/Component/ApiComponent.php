@@ -20,7 +20,7 @@ class ApiComponent extends Component {
 		
 		# If not using json, just ignore
 		#TODO Improve code with a conf with valid extensions
-		if (!isset($controller->request->params['ext']) || $controller->request->params['ext'] != 'json') return;
+		// if (!isset($controller->request->params['ext']) || $controller->request->params['ext'] != 'json') return;
 		
 		# Ignore Auth functions
 		if (isset($controller->Auth)) {
@@ -50,34 +50,35 @@ class ApiComponent extends Component {
 		
 	}
 
-	//called after Controller::beforeRender()
-	function beforeRender(&$controller) {
+	public function beforeRender(&$controller) {
 
+		$controller->viewClass = 'Json';
 
 	}
 
-	//called after Controller::render()
-	function shutdown(&$controller) {
-	}
-	
 	public function setResponse($code, $custom_message = null, $errors = array()) {
 
 		// $this->controller->layout = 'Api.default';
 		// $this->controller->autoRender = false;
-		$this->controller->viewClass = 'Api.Api';
-		
-		$header = $this->controller->httpCodes($code);
+		// $this->controller->viewClass = 'Api.Api';
+
+		// $header = $this->controller->httpCodes($code);
 		// $this->controller->header('HTTP/1.0 ' . $code . ' ' . $header[$code]);
-		$this->controller->set('http_code', $code);
+		// $this->controller->set('http_code', $code);
 		
-		if (is_null($custom_message)) {
-			$custom_message = $header[$code];
-		}
+		// if (is_null($custom_message)) {
+		// 	$custom_message = $header[$code];
+		// }
+
+		unset($this->controller->viewVars['title_for_layout']);
 		
+		$this->controller->set('code', $code);
 		$this->controller->set('msg', $custom_message);
 		$this->controller->set('errors', $errors);
 		
 		header('Access-Control-Allow-Origin: *');
+
+		$this->controller->set('_serialize', array_keys($this->controller->viewVars));
 		
 		// $this->controller->render('/Api/Elements/json'); //$this->controller->action, 'Api.default', '/stub');
 		
