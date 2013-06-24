@@ -38,7 +38,7 @@ class ApiComponent extends Component {
 				$this->data[$this->controller->modelClass] = array();
 				
 				foreach($_POST as $param => $val) {
-					if (strlen($val) == 0) continue;
+					if (is_string($val) && strlen($val) == 0) continue;
 					$this->data[$this->controller->modelClass][$param] = $val;
 				}
 			}
