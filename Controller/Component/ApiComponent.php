@@ -8,7 +8,7 @@ class ApiComponent extends Component {
 	public $data = array();
 
 	//called before Controller::beforeFilter()
-	public function initialize($controller) {
+	public function initialize(Controller $controller) {
 		
 		// saving the controller reference for later use
 		$this->controller = $controller;
@@ -16,7 +16,7 @@ class ApiComponent extends Component {
 	}
 
 	//called after Controller::beforeFilter()
-	public function startup(&$controller) {	
+	public function startup(Controller $controller) {	
 		
 		# If not using json, just ignore
 		#TODO Improve code with a conf with valid extensions
@@ -50,13 +50,15 @@ class ApiComponent extends Component {
 		
 	}
 
-	public function beforeRender(&$controller) {
+	public function beforeRender(Controller $controller) {
 
-		$controller->viewClass = 'Json';
+		
 
 	}
 
 	public function setResponse($code, $custom_message = null, $errors = array()) {
+
+		$this->controller->viewClass = 'Json';
 
 		// $this->controller->layout = 'Api.default';
 		// $this->controller->autoRender = false;
